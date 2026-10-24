@@ -1,0 +1,43 @@
+services:
+  cryptoinvest-demo:
+    #image: docker.io/python:3.13.12-slim
+    image: ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+    ports:
+      - "20011:8000"  # Adjust port based on your application needs
+    networks:
+      - dmz
+    volumes:
+      - cryptoinvest-demo:/src
+      - nvme-btc:/data/btc
+    env_file: ".env"
+    working_dir: /src
+    environment:
+      - PYTHONPATH=/src/.venv/lib/python3.13/site-packages:/src/app:/src:$PYTHONPATH
+    command: python -m app.app
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          memory: 8G  # Adjust based on your needs
+      placement:
+        constraints: [node.hostname == vs11]
+    stop_grace_period: 1m30s
+
+networks:
+  dmz:
+    external: true
+
+volumes:
+  cryptoinvest-demo:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=nfs02,rw
+      device: ":/docker/volumes/cryptoinvest-demo"
+  nvme-btc:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=nfs02,rw
+      device: ":/data/bigdata/btc"

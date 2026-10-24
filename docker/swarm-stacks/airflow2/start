@@ -1,0 +1,1 @@
+docker stack deploy -c compose.yml --detach=false --with-registry-auth airflow2

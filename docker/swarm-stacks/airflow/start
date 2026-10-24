@@ -1,0 +1,1 @@
+docker stack deploy -c airflow.yml --detach=false --with-registry-auth airflow

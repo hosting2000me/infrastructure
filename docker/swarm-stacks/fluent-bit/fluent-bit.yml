@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  fluent-bit:
+    image: fluent/fluent-bit:4.2.2
+    ports:
+      - "24224:24224"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == vs11
+    networks:
+      - intranet
+    volumes:
+      - fluent-bit:/var/log/fluent-bit
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro   # локальный файл
+
+networks:
+  intranet:
+   external: true
+
+volumes:
+  fluent-bit:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=nfs02,rw
+      device: ":/docker/volumes/fluentbit"

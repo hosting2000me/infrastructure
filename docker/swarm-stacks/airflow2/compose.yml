@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  webserver:
+    image: apache/airflow:2.10.5
+    command: webserver
+    ports:
+      - "8880:8080"
+    env_file:
+      - airflow.env
+    networks:
+      - intranet
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+          constraints: [node.hostname == vs15]
+
+  scheduler:
+    image: apache/airflow:2.10.5
+    command: scheduler
+    env_file:
+      - airflow.env
+    networks:
+      - intranet
+    volumes:
+      - airflow_dags:/opt/airflow/dags
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+          constraints: [node.hostname == vs15]
+
+networks:
+  intranet:
+    external: true
+
+volumes:
+  airflow_dags:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=nfs02,rw
+      device: ":/docker/volumes/airflow2/dags"

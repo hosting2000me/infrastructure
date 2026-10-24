@@ -1,0 +1,1 @@
+docker stack deploy -c dnsmasq.yml --detach=false --with-registry-auth dns

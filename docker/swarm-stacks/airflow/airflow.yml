@@ -1,0 +1,53 @@
+version: '3.2'
+
+services:
+  executor:
+    image: hosting2000/app:air
+    #image: bitnami/airflow:latest
+    #user:
+    #  root
+    #command: /opt/bitnami/scripts/airflow/runs.sh
+    environment:
+      - AIRFLOW_DATABASE_HOST=pginternal
+      - AIRFLOW_DATABASE_NAME=airflow
+      - AIRFLOW_DATABASE_USERNAME=postgres
+      - AIRFLOW_DATABASE_PASSWORD=
+      - AIRFLOW_EXECUTOR=LocalExecutor
+      - AIRFLOW_LOAD_EXAMPLES=no
+    ports:
+      - '8888:8080'
+    volumes:
+      - data:/bitnami
+      - dags:/opt/bitnami/airflow/dags
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+     # - /docker/config/airflow_reqs.txt:/bitnami/python/requirements.txt
+    networks:
+      - intranet
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.hostname == vs12
+
+networks:
+  intranet:
+    external: true
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=is02,rw
+      device: ":/docker/volumes/airflow/data"
+
+  dags:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=is02,rw
+      device: ":/docker/volumes/airflow/dags"

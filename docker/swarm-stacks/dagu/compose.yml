@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  dagu:
+    image: ghcr.io/dagucloud/dagu:2.14.0
+    command: ["dagu", "start-all"]
+    ports:
+      - "8525:8080"
+    env_file:
+      - .env
+    networks:
+      - intranet
+    volumes:
+      - dagu:/var/lib/dagu
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+          constraints: [node.hostname == vs15]
+    secrets:
+      - postgres-app-rw-user
+
+secrets:
+  postgres-app-rw-user:
+    external: true
+
+networks:
+  intranet:
+    external: true
+
+volumes:
+  dagu:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: nfsvers=4,addr=nfs02,rw
+      device: ":/docker/volumes/dagu"

@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  dns:
+    image: 4km3/dnsmasq 
+    networks:
+      - intranet
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.labels.dns == yes]
+      restart_policy:
+        condition: any
+    ports:
+      - "53:53/udp"
+      - "53:53"
+      - "5380:8080"
+    configs:
+      - source: dnsmasq_260814
+        target: /etc/dnsmasq.conf
+
+
+networks:
+  intranet:
+    external: true
+
+configs:
+  dnsmasq_260814:
+    external: true
