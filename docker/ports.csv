@@ -1,0 +1,9 @@
+published,protocol,stack,service,target,mode,notes
+53,tcp,dns,dns_dns,53,ingress,Declared in Git
+53,udp,dns,dns_dns,53,ingress,Declared in Git
+5380,tcp,dns,dns_dns,8080,ingress,Declared in Git
+8525,tcp,dagu,dagu_dagu,8080,ingress,Declared in Git
+8880,tcp,airflow2,airflow2_webserver,8080,ingress,Declared in Git
+8888,tcp,airflow,airflow_executor,8080,ingress,Declared in Git
+20011,tcp,cryptoinvest-demo,cryptoinvest-demo_cryptoinvest-demo,8000,ingress,Declared in Git
+24224,tcp,fluent-bit,fluent-bit_fluent-bit,24224,ingress,Declared in Git
