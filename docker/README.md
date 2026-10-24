@@ -59,7 +59,7 @@ For a new stack, first establish:
 - `airflow2/airflow.env` is **tracked** and contains a nonempty `AIRFLOW__DATABASE__SQL_ALCHEMY_CONN`. As the repository is public, check whether the value embeds credentials; if so, rotate credentials and remove them from Git history. Never quote the value in documentation or chat.
 - `fluent-bit/fluent-bit.yml` bind-mounts `./fluent-bit.conf`; a relative host source may not resolve as expected with `docker stack deploy` on a remote Swarm node. Verify actual live deployment before changing it.
 - `airflow` uses NFS alias `is02`, whereas newer stacks use `nfs02`. Do not silently normalize legacy paths.
-- No definitive information in Git about Swarm managers, ingress/reverse proxy, internal DNS/IP ranges, available node resources, or which stacks are *currently* active. Get these from the operator rather than guessing.
+- The user supplied a **2026-10-24 snapshot** of currently published Swarm service ports, now transcribed to `ports.csv`. There is **no reverse proxy**. However the repository alone does not identify the Swarm manager, all node names, local standalone listeners, IP/firewall topology or available resources. Get these from the operator rather than guessing.
 
 ## Planned agent experiments
 
@@ -72,4 +72,4 @@ For a new stack, first establish:
 
 See [`PORTS.md`](PORTS.md) for cluster-wide port inspection, the Git reservation register [`ports.csv`](ports.csv), and read-only live inventory script [`ports.py`](ports.py). These are not proof of free ports until run on a Swarm manager and checked on eligible nodes.
 
-Current decisions for OpenClaw and Hermes Agent (2026-10-24): no Docker socket, only `intranet`, separate NFS paths under `nfs02:/docker/volumes/`, exactly one replica each, `vs15` requested at first launch with failover to other nodes. Swarm cannot guarantee node priority plus automatic failover using a permanent hostname constraint. Browser exposure and live port assignments are pending inspection. See [`AGENTS.md`](AGENTS.md) for generation requirements.
+Current decisions for OpenClaw and Hermes Agent (2026-10-24): no Docker socket, only `intranet`, separate NFS paths under `nfs02:/docker/volumes/`, exactly one replica each, `vs15` requested at first launch with failover to other nodes. Swarm cannot guarantee node priority plus automatic failover using a permanent hostname constraint. There is no reverse proxy: published UI port **21001 -> 18789/tcp** is provisionally reserved for OpenClaw and **21002 -> 9119/tcp** for Hermes. Neither appears in the user-supplied Swarm mapping; full host-level checks remain pending. See [`AGENTS.md`](AGENTS.md) for generation requirements.
