@@ -41,7 +41,7 @@ Official reference: https://docs.openclaw.ai/docker
    # Store the token safely; remove this temporary plaintext file afterward.
    ```
 4. Verify **21001/tcp** is not used by Swarm, by a standalone container or by a host process across the relevant nodes. Restrict ingress on all nodes to trusted admin clients. Direct HTTP sends the credential over the LAN unless transported via a secure tunnel.
-5. Before initial deploy, apply `ai_agents_eligible=true` **only to vs15**. After it starts successfully, label approved backup nodes. Do not apply `node.hostname == vs15` permanently.
+5. Before initial deploy, apply `ai_agents_eligible=true` **only to vs15**. After both agents are healthy, label **vs11 and vs12** as backup nodes. Do not apply `node.hostname == vs15` permanently.
 
 ## Deploy and inspect (from this directory on a Swarm manager)
 
