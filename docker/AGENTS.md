@@ -24,7 +24,7 @@ Official project documentation:
 - Attach only to external Swarm network `intranet`.
 - Persistent state: NFS server `nfs02`, distinct exports `:/docker/volumes/openclaw` and `:/docker/volumes/hermes-agent` (exact export existence and permissions still require live verification).
 - One replica per stateful agent, with `stop-first` updates/rollback and no permanent `node.hostname == vs15` constraint.
-- Preferred initial node is `vs15`, but **failover is mandatory**. Pure Swarm `spread` cannot guarantee vs15-first for one replica; document that limitation rather than falsely promising affinity.
+- Preferred initial node is `vs15`, but **failover is mandatory**. Use a two-stage bootstrap: constraint `node.labels.ai_agents_eligible == true` for both stacks; label only vs15 before initial deployment, verify both agents landed there, then label approved fallback nodes. Do not set a permanent hostname constraint; do not expect automatic failback. Never modify node labels without operator approval.
 - Do not add published WebUI ports until the live Swarm port inventory has been checked. See `docker/PORTS.md`, `docker/ports.csv`, `docker/ports.py`.
 - IMPORTANT: attaching to overlay `intranet` does not secure a published ingress port. Prefer an authenticated intranet reverse proxy with **no published service ports**, or explicitly restrict published ports by firewall.
 - Before deployment, verify that every eligible failover node can access NFS, pull the image and reach the intranet network, and that application authentication/onboarding is configured.
