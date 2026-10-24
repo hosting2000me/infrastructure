@@ -15,7 +15,7 @@ Official reference: https://docs.openclaw.ai/docker
 - Credentials: **external** Swarm secret `openclaw_gateway_token`; at runtime a shell wrapper passes it to the official Gateway process as an environment variable. Never commit token or auth-profile contents.
 - Gateway listens on `18789` inside the container. Published port is `21001` via Swarm ingress.
 - No host Docker socket. Docker sandboxing is not enabled.
-- Initial node should be vs15; follow the shared two-stage `ai_agents_eligible` placement-label process in `../../PORTS.md`.
+- Initial node: **vs15**; allowed failover nodes: **vs11**, **vs12**. Follow the shared two-stage `ai_agents_eligible` placement-label process in `../../PORTS.md`.
 
 ## Required before first deployment
 
