@@ -57,7 +57,7 @@ If any node cannot be inspected, candidate selection fails instead of falsely cl
 - New agent stacks: **one replica each**, NFS from **nfs02**, attach only to **intranet**; no `/var/run/docker.sock` mounts.
 - Any node eligible for failover must mount the NFS export and have access to the container registry, intranet overlay, and required secrets.
 - `node.hostname == vs15` is a hard constraint and **prevents failover**. Do not use it as permanent placement.
-- Docker Swarm placement preferences offer `spread`, not a deterministic primary/secondary priority. A service with one replica can move to another eligible node when its current node fails, but plain declarative Swarm cannot promise `vs15` as the initial/preferred node AND automatic failover simultaneously. Initial location requires operator-directed scheduling, and the task should not be pinned thereafter.
+- Docker Swarm preferences offer `spread`, not a strict primary/secondary priority. To guarantee **initial** scheduling on `vs15` without permanent pinning, use a **two-phase bootstrap** with `placement.constraints: [node.labels.ai_agents_eligible == true]`: (1) label only `vs15`, deploy and confirm both agents start there; (2) label approved fallback nodes. Swarm normally does not rebalance a running task just because other nodes become eligible. Upon task failure on `vs15`, the scheduler may start its replacement on any eligible fallback node. There is no automatic "return to vs15" guarantee.
 - Stateful services must be stop-first; backups and the application recovery behavior remain important even with a shared NFS mount.
 
 Source: https://docs.docker.com/engine/swarm/services/
