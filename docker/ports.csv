@@ -1,9 +1,48 @@
 published,protocol,stack,service,target,mode,notes
-53,tcp,dns,dns_dns,53,ingress,Declared in Git
-53,udp,dns,dns_dns,53,ingress,Declared in Git
-5380,tcp,dns,dns_dns,8080,ingress,Declared in Git
-8525,tcp,dagu,dagu_dagu,8080,ingress,Declared in Git
+53,tcp,dns,dns_dns,53,ingress,Observed in user-provided Swarm service list 2026-10-24
+53,udp,dns,dns_dns,53,ingress,Observed in user-provided Swarm service list 2026-10-24
+888,tcp,swarmpit,swarmpit_app,8080,ingress,Observed in user-provided Swarm service list 2026-10-24
+4080,tcp,linuxdev,linuxdev_linuxdev,4080,ingress,Observed in user-provided Swarm service list 2026-10-24
+4084,tcp,linuxdev,linuxdev_linuxdev,4084,ingress,Observed in user-provided Swarm service list 2026-10-24
+4096,tcp,linuxdev,linuxdev_linuxdev,4096,ingress,Observed in user-provided Swarm service list 2026-10-24
+4222,tcp,nats-primary,nats-primary_nats-primary,4222,ingress,Observed in user-provided Swarm service list 2026-10-24
+5000,tcp,linuxdev,linuxdev_linuxdev,5000,ingress,Observed in user-provided Swarm service list 2026-10-24
+5380,tcp,dns,dns_dns,8080,ingress,Observed in user-provided Swarm service list 2026-10-24
+5436,tcp,pginternal,pginternal_pginternal,5432,ingress,Observed in user-provided Swarm service list 2026-10-24
+5441,tcp,pg-web,pg-web_pgweb-node1,5432,ingress,Observed in user-provided Swarm service list 2026-10-24
+5442,tcp,pg-web,pg-web_pgweb-node2,5432,ingress,Observed in user-provided Swarm service list 2026-10-24
+6333,tcp,qdrant,qdrant_qdrant-node1,6333,ingress,Observed in user-provided Swarm service list 2026-10-24
+6334,tcp,qdrant,qdrant_qdrant-node1,6334,ingress,Observed in user-provided Swarm service list 2026-10-24
+6336,tcp,qdrant,qdrant_qdrant-node2,6333,ingress,Observed in user-provided Swarm service list 2026-10-24
+6337,tcp,qdrant,qdrant_qdrant-node2,6334,ingress,Observed in user-provided Swarm service list 2026-10-24
+6379,tcp,keydb,keydb_keydb-node1,6379,ingress,Observed in user-provided Swarm service list 2026-10-24
+6380,tcp,keydb,keydb_keydb-node2,6379,ingress,Observed in user-provided Swarm service list 2026-10-24
+8000,tcp,portainer,portainer_portainer,8000,ingress,Observed in user-provided Swarm service list 2026-10-24
+8222,tcp,nats-primary,nats-primary_nats-primary,8222,ingress,Observed in user-provided Swarm service list 2026-10-24
+8401,tcp,vscode,vscode_vscode,8401,ingress,Observed in user-provided Swarm service list 2026-10-24
+8402,tcp,vscode,vscode_vscode,8402,ingress,Observed in user-provided Swarm service list 2026-10-24
+8403,tcp,vscode,vscode_vscode,8403,ingress,Observed in user-provided Swarm service list 2026-10-24
+8443,tcp,vscode,vscode_vscode,8443,ingress,Observed in user-provided Swarm service list 2026-10-24
+8448,tcp,vscode,vscode_vscode,8448,ingress,Observed in user-provided Swarm service list 2026-10-24
+8525,tcp,dagu,dagu_dagu,8080,ingress,Observed in user-provided Swarm service list 2026-10-24
 8880,tcp,airflow2,airflow2_webserver,8080,ingress,Declared in Git
-8888,tcp,airflow,airflow_executor,8080,ingress,Declared in Git
-20011,tcp,cryptoinvest-demo,cryptoinvest-demo_cryptoinvest-demo,8000,ingress,Declared in Git
-24224,tcp,fluent-bit,fluent-bit_fluent-bit,24224,ingress,Declared in Git
+8888,tcp,airflow,airflow_executor,8080,ingress,Observed in user-provided Swarm service list 2026-10-24
+9000,tcp,portainer,portainer_portainer,9000,ingress,Observed in user-provided Swarm service list 2026-10-24
+9306,tcp,manticore,manticore_manticore-node1,9306,ingress,Observed in user-provided Swarm service list 2026-10-24
+9308,tcp,manticore,manticore_manticore-node1,9308,ingress,Observed in user-provided Swarm service list 2026-10-24
+9312,tcp,manticore,manticore_manticore-node1,9312,ingress,Observed in user-provided Swarm service list 2026-10-24
+9443,tcp,portainer,portainer_portainer,9443,ingress,Observed in user-provided Swarm service list 2026-10-24
+20001,tcp,brainyaid,brainyaid_chatllm_brainyaid-chatllm-node1b,8002,ingress,Observed in user-provided Swarm service list 2026-10-24
+20002,tcp,brainyaid,brainyaid_chatllm_brainyaid-chatllm-node2b,8002,ingress,Observed in user-provided Swarm service list 2026-10-24
+20003,tcp,brainyaid,brainyaid_chatllm_brainyaid-chatllm-node1a,8002,ingress,Observed in user-provided Swarm service list 2026-10-24
+20004,tcp,brainyaid,brainyaid_chatllm_brainyaid-chatllm-node2a,8002,ingress,Observed in user-provided Swarm service list 2026-10-24
+20011,tcp,cryptoinvest-demo,cryptoinvest-demo_cryptoinvest-demo,8000,ingress,Observed in user-provided Swarm service list 2026-10-24
+20060,tcp,option-alchemy,option-alchemy_option-alchemy,8000,ingress,Observed in user-provided Swarm service list 2026-10-24
+20061,tcp,page-rank,page-rank_page-rank-backend,5000,ingress,Observed in user-provided Swarm service list 2026-10-24
+20080,tcp,brainyaid,brainyaid_main_my-brainyaid-node1,8000,ingress,Observed in user-provided Swarm service list 2026-10-24
+20081,tcp,brainyaid,brainyaid_main_my-brainyaid-node2,8000,ingress,Observed in user-provided Swarm service list 2026-10-24
+20091,tcp,brainyaid,brainyaid_main_vector-service,8004,ingress,Observed in user-provided Swarm service list 2026-10-24
+21001,tcp,openclaw,openclaw_openclaw-gateway,18789,ingress,PROPOSED reservation only - verify host listeners and firewall before deployment
+21002,tcp,hermes-agent,hermes-agent_gateway,9119,ingress,PROPOSED reservation only - verify host listeners and dashboard auth before deployment
+24224,tcp,fluent-bit,fluent-bit_fluent-bit,24224,ingress,Observed in user-provided Swarm service list 2026-10-24
+54320,tcp,pgadmin,pgadmin_pgadmin,80,ingress,Observed in user-provided Swarm service list 2026-10-24
