@@ -38,7 +38,7 @@ Official reference: https://hermes-agent.nousresearch.com/docs/user-guide/docker
    ```
    This password provider is appropriate only on a trusted LAN/VPN, **not for public HTTP Internet exposure**. Use Nous Portal OAuth or OIDC for Internet-facing access. If no valid auth provider is configured, the remote dashboard should fail closed.
 4. Verify published **21002/tcp** is unused by Swarm, other Docker containers and host processes. Restrict Swarm ingress port at the firewall on *all nodes*, not only vs15.
-5. Apply `ai_agents_eligible=true` initially only on vs15, deploy and verify, then mark selected failover nodes eligible.
+5. Apply `ai_agents_eligible=true` initially only on **vs15**, deploy and verify both agents, then mark **vs11** and **vs12** eligible for failover.
 
 ## Deploy/inspect (manager)
 
