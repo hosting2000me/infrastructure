@@ -19,7 +19,13 @@ Official reference: https://hermes-agent.nousresearch.com/docs/user-guide/docker
 ## Required setup before launch
 
 1. Confirm the NFS export is mounted from every failover node and writable for Hermes runtime UID/GID **10000:10000** (or explicitly agree a different mapping).
-2. On vs15, initialize the data volume and run the official interactive setup once:
+2. **NFS + SQLite:** Hermes stores `state.db` on the data volume. The official Docker documentation explicitly recommends `database.journal_mode: delete` for NFS/SMB mounts instead of the default WAL. Put this in the persistent `/opt/data/config.yaml` **before the first gateway start**:
+   ```yaml
+   database:
+     journal_mode: delete
+   ```
+   If `state.db` already exists in WAL mode, simply changing the config is insufficient; stop all Hermes processes and run the documented offline `hermes sessions set-journal-mode delete` procedure before restarting.
+3. On vs15, initialize the data volume and run the official interactive setup once:
    ```bash
    docker volume create --driver local \
      --opt type=nfs --opt o=nfsvers=4,addr=nfs02,rw \
