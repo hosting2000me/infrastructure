@@ -1,0 +1,48 @@
+# Docker Swarm; dashboard basic-auth/OAuth credentials live in /opt/data/.env on NFS.
+# PRE-DEPLOY: ensure dashboard auth is configured; verify published-port firewall.
+services:
+  gateway:
+    image: nousresearch/hermes-agent:stable
+    command: ["gateway", "run"]
+    environment:
+      HERMES_UID: "10000"
+      HERMES_GID: "10000"
+      HERMES_DASHBOARD: "1"
+      HERMES_DASHBOARD_HOST: "0.0.0.0"
+      HERMES_DASHBOARD_PORT: "9119"
+    ports:
+      - target: 9119
+        published: 21002
+        protocol: tcp
+        mode: ingress
+    networks:
+      - intranet
+    volumes:
+      - data:/opt/data
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.ai_agents_eligible == true
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    stop_grace_period: 1m
+
+networks:
+  intranet:
+    external: true
+
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=nfs02,rw"
+      device: ":/docker/volumes/hermes-agent"
