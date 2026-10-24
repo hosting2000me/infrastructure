@@ -25,11 +25,11 @@ ss -lntup
 
 ## Repository port register
 
-`docker/ports.csv` initially tracks **only ports declared in this repository**, NOT the full live infrastructure. It includes both TCP and UDP where applicable.
+`docker/ports.csv` contains **44 individual port/protocol bindings from the Swarm service list supplied on 2026-10-24**, plus the inactive-but-declared `airflow2` port `8880/tcp` and two **proposed** agent reservations (`21001/tcp`, `21002/tcp`). Treat the list as a time-stamped snapshot, not a guaranteed live inventory. It includes both TCP and UDP where applicable.
 
 Reserve new published ports in the CSV **in the same commit/PR** that adds the corresponding stack. Key is `published + protocol`; avoid reusing a reserved ingress port cluster-wide.
 
-Use candidate range **21000-21999** for new app WebUIs for now. It is just a proposed administrative range, not guaranteed available on the actual hosts. No port in it should be assigned before live checks.
+Use candidate range **21000-21999** for new app WebUIs. Proposed reservations: **OpenClaw `21001:18789/tcp`**, **Hermes `21002:9119/tcp`**. Both require full host checks and access-control configuration before deployment.
 
 `docker/ports.py` is read-only: it checks CSV reservations, all live Swarm services, local node listeners/standalone containers, and optionally all Swarm nodes over SSH.
 
@@ -65,3 +65,13 @@ Source: https://docs.docker.com/engine/swarm/services/
 ## Pending before publishing OpenClaw/Hermes dashboards
 
 Determine whether a reverse proxy on `intranet` already provides authenticated browser access. If so, prefer **zero new published ports** and connect the proxy to the service's internal port. Otherwise choose and reserve distinct ingress published ports after live inventory and secure their access externally.
+
+## No reverse proxy: agreed for agent WebUIs (2026-10-24)
+
+There is **no reverse proxy** in this Swarm. Both agents will need published TCP ports for direct browser access, not just membership in the `intranet` overlay network.
+
+Publish only these UI ports, not any optional API/bridge ports, by default. Ingress makes the UI port reachable on every Swarm node; restrict it to the trusted LAN/VPN using firewall rules on **all nodes**. Hermes dashboard additionally requires an authentication provider (LAN username/password or OAuth). OpenClaw requires its Gateway token and per-origin Control UI settings; plain HTTP LAN may have secure-context/device-pairing limitations. Neither stack should be opened to the public internet by mistake.
+
+For direct published UIs there is no need to deploy an additional proxy just for Swarm failover; with ingress, the same published port routes to the task on another eligible node.
+
+Observed non-published services in the user's snapshot (no published port mapping): `portainer_agent`, `swarmpit_db`, `swarmpit_influxdb`, `swarmpit_pagent`.
