@@ -1,0 +1,61 @@
+# Docker Swarm; gateway token is an external Swarm secret.
+# PRE-DEPLOY: verify live host ports, restrict ingress at firewall, initialize NFS state.
+services:
+  gateway:
+    image: ghcr.io/openclaw/openclaw:latest
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        export OPENCLAW_GATEWAY_TOKEN="$(cat /run/secrets/openclaw_gateway_token)"
+        exec node dist/index.js gateway --bind lan --port 18789
+    environment:
+      HOME: /home/node
+      OPENCLAW_HOME: /home/node
+      OPENCLAW_STATE_DIR: /home/node/.openclaw
+      OPENCLAW_CONFIG_PATH: /home/node/.openclaw/openclaw.json
+      OPENCLAW_CONFIG_DIR: /home/node/.openclaw
+      OPENCLAW_WORKSPACE_DIR: /home/node/.openclaw/workspace
+      OPENCLAW_GATEWAY_PORT: "18789"
+    ports:
+      - target: 18789
+        published: 21001
+        protocol: tcp
+        mode: ingress
+    networks:
+      - intranet
+    volumes:
+      - state:/home/node/.openclaw
+    secrets:
+      - openclaw_gateway_token
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.ai_agents_eligible == true
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 1
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+    stop_grace_period: 1m
+
+networks:
+  intranet:
+    external: true
+
+secrets:
+  openclaw_gateway_token:
+    external: true
+
+volumes:
+  state:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=nfs02,rw"
+      device: ":/docker/volumes/openclaw"
