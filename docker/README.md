@@ -67,3 +67,9 @@ For a new stack, first establish:
 - `hermes-agent`: official `nousresearch/hermes-agent` image, `gateway run`; all mutable state under `/opt/data`. Optional dashboard on container port `9119`, and API server on `8642` when enabled. Auth required for network-exposed dashboard. Official docs: https://hermes-agent.nousresearch.com/docs/user-guide/docker
 
 **Do not choose node, NFS path, published ports, gateway accessibility or host Docker socket permissions for these two stacks until the operator answers.**
+
+## Port inventory and current agent decisions
+
+See [`PORTS.md`](PORTS.md) for cluster-wide port inspection, the Git reservation register [`ports.csv`](ports.csv), and read-only live inventory script [`ports.py`](ports.py). These are not proof of free ports until run on a Swarm manager and checked on eligible nodes.
+
+Current decisions for OpenClaw and Hermes Agent (2026-10-24): no Docker socket, only `intranet`, separate NFS paths under `nfs02:/docker/volumes/`, exactly one replica each, `vs15` requested at first launch with failover to other nodes. Swarm cannot guarantee node priority plus automatic failover using a permanent hostname constraint. Browser exposure and live port assignments are pending inspection. See [`AGENTS.md`](AGENTS.md) for generation requirements.
