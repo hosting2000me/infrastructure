@@ -14,6 +14,7 @@ services:
       replicas: 2
       placement:
         constraints: [node.labels.embedder_service == true]
+        max_replicas_per_node: 1
 
 networks:
   intranet:
