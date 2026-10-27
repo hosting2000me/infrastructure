@@ -11,9 +11,9 @@ services:
       - intranet
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
       placement:
-        constraints: [node.hostname == vs15]
+        constraints: [node.labels.embedder_service == true]
 
 networks:
   intranet:
