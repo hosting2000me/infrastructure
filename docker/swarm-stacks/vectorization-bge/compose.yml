@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  vectorization-bge:
+    image: ghcr.io/hosting2000me/vectorization:bge-colbert
+    ports:
+      - "7860:7860"
+    env_file:
+      - .env
+    networks:
+      - intranet
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == vs15]
+
+networks:
+  intranet:
+    external: true
