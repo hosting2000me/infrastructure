@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  vectorization-bge:
+    image: ghcr.io/hosting2000me/vectorization:bge-colbert
+    ports:
+      - "7860:7860"
+    env_file:
+      - .env
+    networks:
+      - intranet
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 6G
+      placement:
+        constraints: [node.labels.embedder_service == true]
+        max_replicas_per_node: 1
+
+networks:
+  intranet:
+    external: true
